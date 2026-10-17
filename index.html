@@ -18,24 +18,45 @@
     <!-- 콘페티 축하 효과 캔버스 -->
     <canvas id="confettiCanvas"></canvas>
 
+    <!-- 포코피아 하늘 & 구름 배경 장식 -->
+    <div class="pokopia-sky-decor" aria-hidden="true">
+      <div class="pokopia-sun"></div>
+      <div class="pokopia-cloud cloud-1">☁️</div>
+      <div class="pokopia-cloud cloud-2">☁️</div>
+      <div class="pokopia-cloud cloud-3">☁️</div>
+      <div class="pokopia-leaves">🍃</div>
+      <div class="pokopia-flowers">🌸</div>
+    </div>
+
     <div class="app-container">
-      <!-- 상단 헤더 -->
+      <!-- 상단 헤더 (포코피아 마을 스타일) -->
       <header class="site-header">
         <div class="brand-section">
-          <div class="mascot-icon" aria-hidden="true">🎒</div>
+          <div class="mascot-icon" aria-hidden="true">
+            <span class="mascot-inner">🏝️</span>
+            <span class="mascot-sub">✨</span>
+          </div>
           <div class="brand-info">
-            <h1>
-              우리 반 1인 1역할 배정기
-              <span class="brand-badge">2026</span>
-            </h1>
+            <div class="pokopia-logo-title">
+              <span class="logo-char c-blue">우</span>
+              <span class="logo-char c-green">리</span>
+              <span class="logo-char c-yellow">반</span>
+              <span class="logo-space"></span>
+              <span class="logo-char c-orange">1</span>
+              <span class="logo-char c-pink">인</span>
+              <span class="logo-char c-purple">1</span>
+              <span class="logo-char c-green">역</span>
+              <span class="logo-char c-blue">할</span>
+              <span class="brand-badge">POKOPIA</span>
+            </div>
             <p class="brand-sub">
-              <span>알록달록 즐거운 교실 생활</span>
+              <span class="sub-motto">🌿 다 함께 가꾸는 행복한 우리 마을</span>
               <span class="class-title-tag" id="mainClassTitle">햇살초등학교 3학년 2반</span>
             </p>
           </div>
         </div>
 
-        <!-- 상단 액션 바: 구글 스프레드시트 연동 및 인쇄 기능 -->
+        <!-- 상단 액션 바: 구글 스프레드시트 연동 및 인쇄 기능 (우드 보드 스타일) -->
         <nav class="header-actions" aria-label="주요 기능 메뉴">
           <button type="button" class="btn-header btn-sheet-load" id="btnFetchSheets" title="구글 스프레드시트에서 학생과 역할 명단을 불러옵니다">
             🔄 시트 불러오기

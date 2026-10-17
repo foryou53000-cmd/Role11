@@ -10,18 +10,18 @@ export const DEFAULT_STUDENTS = [
 ];
 
 export const DEFAULT_ROLES = [
-  { id: '1', name: '칠판 지우미', icon: '🧹', desc: '칠판을 반짝반짝 깨끗하게 닦아요', color: 'mint' },
-  { id: '2', name: '우유 도우미', icon: '🥛', desc: '시원하고 맛있는 우유를 챙겨줘요', color: 'blue' },
-  { id: '3', name: '에너지 지킴이', icon: '💡', desc: '나갈 때 전등과 냉난방기를 꺼요', color: 'yellow' },
-  { id: '4', name: '줄서기 반장', icon: '🚶', desc: '이동할 때 바른 걸음으로 줄을 이끌어요', color: 'peach' },
-  { id: '5', name: '도서 정리왕', icon: '📚', desc: '학급 문고 책을 바르게 꽂아요', color: 'lavender' },
-  { id: '6', name: '분리수거 요원', icon: '♻️', desc: '재활용 쓰레기를 바르게 분류해요', color: 'mint' },
-  { id: '7', name: '창문 환기 요정', icon: '🪟', desc: '쉬는 시간마다 상쾌한 공기를 선물해요', color: 'sky' },
-  { id: '8', name: '학습지 도우미', icon: '📑', desc: '선생님 학습지와 알림장을 나눠줘요', color: 'pink' },
-  { id: '9', name: '화분 사랑단', icon: '🌱', desc: '교실 화분에 물을 주고 사랑을 줘요', color: 'yellow' },
-  { id: '10', name: '보건 위생 지킴이', icon: '🧼', desc: '깨끗한 손 씻기와 위생을 안내해요', color: 'blue' },
-  { id: '11', name: '컴퓨터·TV 관리관', icon: '💻', desc: '수업 후 전자칠판과 컴퓨터를 확인해요', color: 'lavender' },
-  { id: '12', name: '칭찬 배달원', icon: '💌', desc: '친구들에게 고운 말과 칭찬을 전해요', color: 'peach' }
+  { id: '1', name: '칠판 지우미', icon: '🧹', partner: '꼬부기 💧', desc: '칠판을 반짝반짝 깨끗하게 닦아요', color: 'water' },
+  { id: '2', name: '우유 도우미', icon: '🥛', partner: '피카츄 ⚡', desc: '시원하고 맛있는 우유를 챙겨줘요', color: 'electric' },
+  { id: '3', name: '에너지 지킴이', icon: '💡', partner: '파이리 🔥', desc: '나갈 때 전등과 냉난방기를 꺼요', color: 'fire' },
+  { id: '4', name: '줄서기 반장', icon: '🚶', partner: '이상해씨 🍃', desc: '이동할 때 바른 걸음으로 줄을 이끌어요', color: 'grass' },
+  { id: '5', name: '도서 정리왕', icon: '📚', partner: '이브이 🌿', desc: '학급 문고 책을 바르게 꽂아요', color: 'wood' },
+  { id: '6', name: '분리수거 요원', icon: '♻️', partner: '디그다 🪵', desc: '재활용 쓰레기를 바르게 분류해요', color: 'earth' },
+  { id: '7', name: '창문 환기 요정', icon: '🪟', partner: '버터플 🦋', desc: '쉬는 시간마다 상쾌한 공기를 선물해요', color: 'wind' },
+  { id: '8', name: '학습지 도우미', icon: '📑', partner: '메타몽 🌸', desc: '선생님 학습지와 알림장을 나눠줘요', color: 'fairy' },
+  { id: '9', name: '화분 사랑단', icon: '🌱', partner: '뚜벅쵸 🌷', desc: '교실 화분에 물을 주고 사랑을 줘요', color: 'flower' },
+  { id: '10', name: '보건 위생 지킴이', icon: '🧼', partner: '럭키 💖', desc: '깨끗한 손 씻기와 위생을 안내해요', color: 'care' },
+  { id: '11', name: '컴퓨터·TV 관리관', icon: '💻', partner: '코일 ⚙️', desc: '수업 후 전자칠판과 컴퓨터를 확인해요', color: 'tech' },
+  { id: '12', name: '칭찬 배달원', icon: '💌', partner: '토게피 🥚', desc: '친구들에게 고운 말과 칭찬을 전해요', color: 'sunny' }
 ];
 
 // Fisher-Yates 무작위 셔플 알고리즘
@@ -158,37 +158,55 @@ if (typeof window !== 'undefined') {
     }
   }
 
-  // 간단한 효과음 (Web Audio API)
-  function playSound(type) {
+  // 간단한 효과음 (Web Audio API - 포코피아 스타일 귀여운 효과음)
+  function playSound(type, index = 0) {
     if (!state.soundEnabled) return;
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
 
       if (type === 'dice') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(300, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(320, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(640, ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.18);
         osc.start();
-        osc.stop(ctx.currentTime + 0.15);
-      } else if (type === 'success') {
-        const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
-        notes.forEach((freq, idx) => {
+        osc.stop(ctx.currentTime + 0.18);
+      } else if (type === 'pop') {
+        // 순차 등장 시 카드가 하나씩 나타날 때의 맑은 실로폰/마림바 음계
+        const notes = [
+          523.25, 587.33, 659.25, 698.46, 783.99, 880.00,
+          987.77, 1046.50, 1174.66, 1318.51, 1396.91, 1567.98
+        ];
+        const freq = notes[index % notes.length];
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.22);
+      } else if (type === 'fanfare') {
+        // 모든 카드가 다 나타났을 때의 신나는 축하 팡파레
+        const fanfareNotes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        fanfareNotes.forEach((freq, idx) => {
           const noteOsc = ctx.createOscillator();
           const noteGain = ctx.createGain();
           noteOsc.connect(noteGain);
           noteGain.connect(ctx.destination);
-          noteOsc.type = 'sine';
-          noteOsc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
-          noteGain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.08);
-          noteGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.08 + 0.25);
-          noteOsc.start(ctx.currentTime + idx * 0.08);
-          noteOsc.stop(ctx.currentTime + idx * 0.08 + 0.25);
+          noteOsc.type = 'triangle';
+          noteOsc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.07);
+          noteGain.gain.setValueAtTime(0.14, ctx.currentTime + idx * 0.07);
+          noteGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.07 + 0.35);
+          noteOsc.start(ctx.currentTime + idx * 0.07);
+          noteOsc.stop(ctx.currentTime + idx * 0.07 + 0.35);
         });
       }
     } catch {
@@ -204,16 +222,17 @@ if (typeof window !== 'undefined') {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const colors = ['#FF8A80', '#FFD180', '#FFFF8D', '#CCFF90', '#A7FFEB', '#80D8FF', '#EA80FC'];
-    const particles = Array.from({ length: 90 }).map(() => ({
+    // 포코피아 테마 색상 (상큼한 잔디 초록, 벚꽃 핑크, 하늘 파랑, 햇살 노랑)
+    const colors = ['#7AC74F', '#A7E972', '#FFB5A7', '#FCD5CE', '#48CAE4', '#90E0EF', '#FFE66D', '#FF6B6B'];
+    const particles = Array.from({ length: 110 }).map(() => ({
       x: canvas.width / 2,
-      y: canvas.height * 0.45,
-      vx: (Math.random() - 0.5) * 14,
-      vy: (Math.random() - 0.7) * 14,
-      size: Math.random() * 8 + 4,
+      y: canvas.height * 0.42,
+      vx: (Math.random() - 0.5) * 16,
+      vy: (Math.random() - 0.75) * 16,
+      size: Math.random() * 9 + 4,
       color: colors[Math.floor(Math.random() * colors.length)],
       rotation: Math.random() * 360,
-      vRot: (Math.random() - 0.5) * 12,
+      vRot: (Math.random() - 0.5) * 14,
       life: 1
     }));
 
@@ -224,9 +243,9 @@ if (typeof window !== 'undefined') {
       particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.25; // gravity
+        p.vy += 0.28; // gravity
         p.rotation += p.vRot;
-        p.life -= 0.012;
+        p.life -= 0.011;
 
         if (p.life > 0) {
           alive = true;
@@ -250,13 +269,15 @@ if (typeof window !== 'undefined') {
     render();
   }
 
-  // 카드 렌더링
-  function renderCards(assignments) {
+  // 카드 렌더링 (staggered fade-in 순차적 등장 지원)
+  function renderCards(assignments, isStaggered = false) {
     const grid = document.getElementById('cardsGrid');
     const emptyState = document.getElementById('emptyState');
     const statusBadge = document.getElementById('statusBadge');
     const studentCountEl = document.getElementById('studentCount');
     const roleCountEl = document.getElementById('roleCount');
+    const btn = document.getElementById('btnAssign');
+    const diceIcon = document.getElementById('diceIcon');
 
     if (studentCountEl) studentCountEl.textContent = state.students.length;
     if (roleCountEl) roleCountEl.textContent = state.roles.length;
@@ -275,37 +296,80 @@ if (typeof window !== 'undefined') {
     }
 
     if (emptyState) emptyState.style.display = 'none';
-    if (statusBadge) {
-      statusBadge.textContent = `🎉 ${assignments.length}명 배정 완료!`;
-      statusBadge.className = 'status-badge done';
-    }
 
     grid.innerHTML = '';
+
+    const staggerStepMs = 85;
+
     assignments.forEach((item, index) => {
       const card = document.createElement('div');
-      const color = item.role.color || 'mint';
-      card.className = `role-card pastel-${color}`;
+      const color = item.role.color || 'grass';
+      card.className = `role-card habitat-${color} ${isStaggered ? 'stagger-card' : ''}`;
       card.setAttribute('data-id', item.id);
-      card.style.animationDelay = `${index * 0.04}s`;
+      card.style.setProperty('--stagger-idx', index);
+
+      // 포코피아 파트너 배지 (있을 경우 표시)
+      const partnerTag = item.role.partner 
+        ? `<span class="partner-badge" title="포코피아 프렌즈 파트너">${escapeHtml(item.role.partner)}</span>` 
+        : '';
 
       card.innerHTML = `
         <div class="card-header">
           <span class="role-badge">역할 #${String(index + 1).padStart(2, '0')}</span>
+          ${partnerTag}
           <span class="card-icon" aria-hidden="true">${item.role.icon || '⭐'}</span>
         </div>
         <div class="card-role-title">${escapeHtml(item.role.name)}</div>
         <div class="card-desc">${escapeHtml(item.role.desc || '')}</div>
         <div class="card-divider"></div>
         <div class="assigned-student-box">
-          <span class="student-label">담당 학생</span>
+          <span class="student-label">담당 친구</span>
           <div class="student-name-wrapper">
-            <span class="student-avatar">🎒</span>
+            <span class="student-avatar" aria-hidden="true">🧢</span>
             <span class="student-name">${escapeHtml(item.student)}</span>
           </div>
         </div>
       `;
       grid.appendChild(card);
+
+      if (isStaggered) {
+        // 카드가 순차적으로 나타날 때마다 상큼한 실로폰 음계 재생
+        setTimeout(() => {
+          playSound('pop', index);
+        }, index * staggerStepMs);
+      }
     });
+
+    if (isStaggered) {
+      if (statusBadge) {
+        statusBadge.textContent = '🎲 순차 배정 중...';
+        statusBadge.className = 'status-badge shuffling';
+      }
+
+      // 마지막 카드가 등장한 직후 팡파레와 꽃가루 터뜨리기
+      const totalDuration = assignments.length * staggerStepMs + 300;
+      setTimeout(() => {
+        if (statusBadge) {
+          statusBadge.textContent = `🎉 ${assignments.length}명 배정 완료!`;
+          statusBadge.className = 'status-badge done';
+        }
+        state.isShuffling = false;
+        if (btn) btn.disabled = false;
+        if (diceIcon) diceIcon.classList.remove('rolling');
+
+        playSound('fanfare');
+        launchConfetti();
+        showToast(`🎉 포코피아 마을 ${assignments.length}명의 역할이 멋지게 배정되었습니다!`);
+      }, totalDuration);
+    } else {
+      if (statusBadge) {
+        statusBadge.textContent = `🎉 ${assignments.length}명 배정 완료!`;
+        statusBadge.className = 'status-badge done';
+      }
+      state.isShuffling = false;
+      if (btn) btn.disabled = false;
+      if (diceIcon) diceIcon.classList.remove('rolling');
+    }
 
     renderPrintView(assignments);
   }
@@ -335,11 +399,13 @@ if (typeof window !== 'undefined') {
 
     assignments.forEach((item, idx) => {
       const tr = document.createElement('tr');
+      const partnerText = item.role.partner ? ` (${item.role.partner})` : '';
       tr.innerHTML = `
         <td class="print-no">${idx + 1}</td>
         <td class="print-role">
           <span class="print-icon">${item.role.icon || '⭐'}</span>
           <strong>${escapeHtml(item.role.name)}</strong>
+          <small class="print-partner-label">${escapeHtml(partnerText)}</small>
         </td>
         <td class="print-desc">${escapeHtml(item.role.desc || '-')}</td>
         <td class="print-student"><strong>${escapeHtml(item.student)}</strong></td>
@@ -359,7 +425,7 @@ if (typeof window !== 'undefined') {
       .replace(/'/g, '&#39;');
   }
 
-  // 역할 배정 실행 (애니메이션 포함)
+  // 역할 배정 실행 (부드러운 순차적 등장 연출)
   function handleAssign() {
     if (state.isShuffling) return;
     if (state.students.length === 0) {
@@ -380,33 +446,15 @@ if (typeof window !== 'undefined') {
 
     playSound('dice');
 
-    // 두근두근 롤링 효과
-    let counter = 0;
-    const maxRolls = 6;
-    const interval = setInterval(() => {
-      counter++;
-      playSound('dice');
-      // 임시 무작위 매칭 미리보기
-      const tempAssignments = assignRoles(state.students, state.roles);
-      renderCards(tempAssignments);
+    // 0.45초 주사위 구르는 애니메이션 후, 순차적 staggered 등장 시작!
+    setTimeout(() => {
+      const finalAssignments = assignRoles(state.students, state.roles);
+      state.assignments = finalAssignments;
+      saveStorage(STORAGE_KEYS.ASSIGNMENTS, finalAssignments);
 
-      if (counter >= maxRolls) {
-        clearInterval(interval);
-        // 최종 배정 확정
-        const finalAssignments = assignRoles(state.students, state.roles);
-        state.assignments = finalAssignments;
-        saveStorage(STORAGE_KEYS.ASSIGNMENTS, finalAssignments);
-
-        state.isShuffling = false;
-        if (btn) btn.disabled = false;
-        if (diceIcon) diceIcon.classList.remove('rolling');
-
-        renderCards(finalAssignments);
-        playSound('success');
-        launchConfetti();
-        showToast('🎉 역할 배정이 멋지게 완료되었습니다!');
-      }
-    }, 130);
+      // isStaggered = true 로 순차적 등장 렌더링 호출
+      renderCards(finalAssignments, true);
+    }, 450);
   }
 
   // 토스트 메시지 알림
@@ -428,11 +476,12 @@ if (typeof window !== 'undefined') {
       return;
     }
 
-    let text = `📋 [${state.className} 1인 1역할 배정 결과]\n`;
+    let text = `📋 [${state.className} 1인 1역할 배정표]\n`;
     text += `배정일: ${new Date().toLocaleDateString('ko-KR')}\n`;
     text += '------------------------------------\n';
     state.assignments.forEach((item, idx) => {
-      text += `${idx + 1}. ${item.role.icon || '⭐'} ${item.role.name} : ${item.student} (${item.role.desc || ''})\n`;
+      const partner = item.role.partner ? ` [${item.role.partner}]` : '';
+      text += `${idx + 1}. ${item.role.icon || '⭐'} ${item.role.name}${partner} : ${item.student} (${item.role.desc || ''})\n`;
     });
     text += '------------------------------------\n';
     text += '모두 자신의 역할을 책임감 있게 완수해요! ✨';
