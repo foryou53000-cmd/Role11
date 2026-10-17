@@ -58,13 +58,16 @@
 
         <!-- 상단 액션 바: 구글 스프레드시트 연동 및 인쇄 기능 (우드 보드 스타일) -->
         <nav class="header-actions" aria-label="주요 기능 메뉴">
-          <button type="button" class="btn-header btn-sheet-load" id="btnFetchSheets" title="구글 스프레드시트에서 학생과 역할 명단을 불러옵니다">
-            🔄 시트 불러오기
+          <button type="button" class="btn-header btn-sheet-load" id="btnFetchSheets" title="구글 스프레드시트에서 학생 명단과 역할을 불러옵니다">
+            🔄 시트에서 명단/결과 불러오기
           </button>
-          <button type="button" class="btn-header btn-sheet-save" id="btnSaveSheets" title="배정된 결과를 구글 스프레드시트에 저장합니다">
-            💾 시트에 결과 저장
+          <button type="button" class="btn-header btn-sheet-save" id="btnSaveSheets" title="배정된 결과를 구글 스프레드시트에 안전하게 저장합니다">
+            💾 배정 결과 구글 시트에 저장
           </button>
-          <button type="button" class="btn-header btn-settings" id="btnOpenEditModal" title="학생 명단과 역할 목록을 편집합니다">
+          <button type="button" class="btn-header btn-sheet-url" id="btnOpenSheetsModal" title="연결된 구글 Apps Script 웹앱 URL을 확인 및 변경합니다">
+            ⚙️ 시트 URL 설정
+          </button>
+          <button type="button" class="btn-header btn-settings" id="btnOpenEditModal" title="학생 명단과 역할 목록을 직접 편집합니다">
             👩‍🏫 학생·역할 설정
           </button>
           <button type="button" class="btn-header btn-print" id="btnPrint" title="교실 게시판 부착용 A4 양식으로 인쇄합니다">
@@ -158,54 +161,52 @@
       <div class="modal-card">
         <div class="modal-header">
           <h2 class="modal-title" id="sheetsModalTitle">
-            <span>📊 구글 스프레드시트(Apps Script) 연동 안내</span>
+            <span>📊 구글 스프레드시트(Apps Script 웹앱) 연동 설정</span>
           </h2>
-          <button type="button" class="modal-close" title="닫기">&times;</button>
+          <button type="button" class="modal-close" id="btnCloseSheetsModal" title="닫기">&times;</button>
         </div>
         <div class="modal-body">
           <div class="guide-box">
-            <h4>💡 구글 Apps Script 연동 준비</h4>
+            <h4>💡 구글 Apps Script 연동 완료 상태</h4>
             <p>
-              구글 시트 메뉴의 <strong>[확장 프로그램] &gt; [Apps Script]</strong>에서 웹 앱으로 배포한 후 발급받은 URL을 아래에 등록하면, 언제든 시트 데이터를 원클릭으로 불러오거나 배정 결과를 전송할 수 있습니다.
+              배포된 Apps Script 웹앱 URL이 자동으로 연결되어 있습니다. 페이지 진입 시 자동으로 시트의 최신 명단을 불러오며, 원할 때 언제든 상단 버튼으로 양방향 동기화(불러오기/저장)를 실행할 수 있습니다.
             </p>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="sheetsUrlInput">구글 Apps Script 웹 앱 URL</label>
+            <label class="form-label" for="sheetsUrlInput">구글 Apps Script 웹앱 배포 URL</label>
             <input
               type="url"
               class="input-text"
               id="sheetsUrlInput"
+              value="https://script.google.com/macros/s/AKfycby4vaFxQAyMmf84DYyR9BqQmwtLAvcusKyEwLLibHLbnMooGfVy3Fwe8F6G9ylkszR2/exec"
               placeholder="https://script.google.com/macros/s/.../exec"
             />
-            <span class="form-help">※ 웹 앱 배포 시 '액세스 권한: 모든 사용자(Anyone)'로 설정해야 브라우저와 통신할 수 있습니다.</span>
+            <span class="form-help">※ 새 버전을 배포하여 주소가 바뀌었을 경우 여기에 붙여넣고 [URL 설정 저장]을 누르면 localStorage에 즉시 반영됩니다.</span>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Apps Script 샘플 코드 (복사하여 사용)</label>
-            <pre class="code-snippet"><code>function doGet(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = sheet.getDataRange().getValues();
-  // [{student: "...", roleName: "..."}] 반환
-  return ContentService.createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
+            <label class="form-label">Apps Script 표준 송수신 규격 가이드</label>
+            <pre class="code-snippet"><code>// 1. GET 요청 응답 규격 (시트 데이터 전송)
+{
+  "status": "success",
+  "students": [{ "num": 1, "name": "김민준" }, ...],
+  "roles": [{ "role": "칠판당번", "desc": "칠판 닦기" }, ...],
+  "results": [{ "date": "...", "num": 1, "name": "김민준", "role": "칠판당번", "desc": "칠판 닦기" }]
 }
 
-function doPost(e) {
-  var body = JSON.parse(e.postData.contents);
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("배정결과") 
-              || SpreadsheetApp.getActiveSpreadsheet().insertSheet("배정결과");
-  sheet.clear();
-  sheet.appendRow(["번호", "학생 이름", "역할 이름", "역할 임무", "배정일"]);
-  body.rows.forEach(function(r) {
-    sheet.appendRow([r.no, r.student, r.roleName, r.roleDesc, r.assignedDate]);
-  });
-  return ContentService.createTextOutput("OK");
+// 2. POST 요청 전송 규격 (CORS 에러 방지용 text/plain)
+{
+  "action": "saveResults",
+  "assignments": [
+    { "num": 1, "name": "김민준", "role": "칠판당번", "desc": "칠판 닦기" }
+  ]
 }</code></pre>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-modal btn-modal-cancel modal-close">닫기</button>
+          <button type="button" class="btn-modal btn-modal-test" id="btnTestSheets">🔗 연결 테스트</button>
           <button type="button" class="btn-modal btn-modal-primary" id="btnSaveUrl">URL 설정 저장</button>
         </div>
       </div>
@@ -219,7 +220,7 @@ function doPost(e) {
           <h2 class="modal-title" id="editModalTitle">
             <span>✏️ 학생 명단 및 역할 목록 편집</span>
           </h2>
-          <button type="button" class="modal-close" title="닫기">&times;</button>
+          <button type="button" class="modal-close" id="btnCloseEditModal" title="닫기">&times;</button>
         </div>
         <div class="modal-body">
           <div class="form-group">

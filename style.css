@@ -93,6 +93,10 @@
   padding: 0;
 }
 
+input, textarea, select, button, code, pre {
+  font-family: inherit;
+}
+
 body {
   font-family: 'Gowun Dodum', 'Pretendard', 'Noto Sans KR', -apple-system, sans-serif;
   background-color: var(--grass-base);
@@ -400,6 +404,11 @@ body {
   background: #EBF5FB;
   color: #1B4F72;
   border-color: #AED6F1;
+}
+.btn-sheet-url {
+  background: #FFF8E1;
+  color: #B45309;
+  border-color: #FDE68A;
 }
 .btn-settings {
   background: #FEF9E7;
@@ -1144,6 +1153,15 @@ body {
 .btn-modal-cancel {
   background: #E2E8F0;
   color: #475569;
+}
+
+.btn-modal-test {
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 2px solid #BAE6FD;
+}
+.btn-modal-test:hover {
+  background: #BAE6FD;
 }
 
 .btn-modal-primary {
